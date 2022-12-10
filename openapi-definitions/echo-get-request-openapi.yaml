@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  title: Echo GET API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: API root
+paths:
+  /echo/:
+    get:
+      summary: Echoes back GET request
+      responses:
+        '401':
+          description: "Credentials not provided/expired"
+        '403':
+          description: "Unauthorized request. Scope vz_test is required"
+        '200':    # status code
+          description: "Http request in a JSON format"
+          content:
+            application/json:
+              schema:
+                title: "EchoResponse"
+                type: object
