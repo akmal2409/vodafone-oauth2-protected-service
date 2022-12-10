@@ -15,7 +15,7 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
                .authorizeHttpRequests()
-               .requestMatchers("/api/v1/echo")
+               .antMatchers("/api/v1/echo")
                .hasAuthority("SCOPE_vz_test")
                .anyRequest()
                .authenticated()
