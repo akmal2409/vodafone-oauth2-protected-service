@@ -1,12 +1,9 @@
 package com.akmal.vodafoneoauth2protectedservice.controller;
 
 
-
-import java.net.URI;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +12,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/api/v1/echo")
+@RequestMapping(EchoController.BASE_API)
 public class EchoController {
 
+  protected static final String BASE_API = "/api/v1/echo";
   private final RestTemplate restTemplate;
 
   public EchoController(@Qualifier("echoRestTemplate") RestTemplate restTemplate) {
@@ -26,8 +24,6 @@ public class EchoController {
 
   @RequestMapping(value = "/**")
   public ResponseEntity<?> echo(RequestEntity<?> entity, HttpServletRequest request) {
-    RequestEntity<?> proxyEntity = stripCredentials(entity);
-
     try {
       return restTemplate.exchange(entity.getUrl().getPath(),
           entity.getMethod(),
@@ -39,16 +35,5 @@ public class EchoController {
                  .headers(e.getResponseHeaders())
                  .body(e.getResponseBodyAsString());
     }
-  }
-
-  private RequestEntity<?> stripCredentials(RequestEntity<?> requestEntity) {
-    final var headers = HttpHeaders.writableHttpHeaders(requestEntity.getHeaders());
-    headers.remove("Authorization");
-    return new RequestEntity<>(
-        requestEntity.getBody(),
-        headers,
-        requestEntity.getMethod(),
-        URI.create(requestEntity.getUrl().getPath()),
-        requestEntity.getType());
   }
 }
