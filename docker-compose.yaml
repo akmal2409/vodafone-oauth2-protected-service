@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  keycloak:
+    hostname: "keycloak"
+    image: quay.io/keycloak/keycloak:18.0.0
+    restart: always
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: "keycloak"
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    ports:
+      - "8080:8080"
+    networks:
+      - internal
+    command:
+      - "start-dev"
+
+  echo-server:
+    hostname: "echo"
+    image: ealen/echo-server:0.7.0
+    restart: always
+    networks:
+      - internal
+
+
+  spring-oauth2-service:
+    build: "./"
+    ports:
+      - "8081:8081"
+    networks:
+      - internal
+    environment:
+      SERVER_PORT: 8081
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://keycloak:8080/realms/master"
+      PROXY_ECHO_HOST: "http://echo:80"
+    depends_on:
+       - keycloak
+volumes:
+  keycloak_data:
+
+networks:
+  internal:
