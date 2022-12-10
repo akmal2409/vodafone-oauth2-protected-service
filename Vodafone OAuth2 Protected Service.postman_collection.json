@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "513b4809-fb3c-4dc2-acdd-6ea8ea7af219",
+		"name": "Vodafone OAuth2 Protected Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12279027"
+	},
+	"item": [
+		{
+			"name": "Token Request (Client Credentials)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "spring-client",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "7CpUb6BRpJvqVV1tuX4yEIbD6O1YpHCD",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "vz_test",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"master",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get echo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/echo/hey",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"echo",
+						"hey"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
